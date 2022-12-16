@@ -122,40 +122,6 @@ class MainMenuState extends MusicBeatState
 
 		updateSelection();
 
-		difficultySelectors = new FlxGroup();
-		add(difficultySelectors);
-
-		var ui_tex = Paths.getSparrowAtlas('campaign_menu_UI_assets');
-		leftArrow = new FlxSprite(FlxG.width - 650, 10);
-		leftArrow.frames = ui_tex;
-		leftArrow.animation.addByPrefix('idle', "arrow left");
-		leftArrow.animation.addByPrefix('press', "arrow push left");
-		leftArrow.animation.play('idle');
-		leftArrow.antialiasing = ClientPrefs.globalAntialiasing;
-		difficultySelectors.add(leftArrow);
-
-		sprDifficultyGroup = new FlxTypedGroup<FlxSprite>();
-		add(sprDifficultyGroup);
-
-		for (i in 0...CoolUtil.difficultyStuff.length) {
-			var sprDifficulty:FlxSprite = new FlxSprite(leftArrow.x + 60, leftArrow.y).loadGraphic(Paths.image('menudifficulties/' + CoolUtil.difficultyStuff[i][0].toLowerCase()));
-			sprDifficulty.x += (308 - sprDifficulty.width) / 2;
-			sprDifficulty.ID = i;
-			sprDifficulty.antialiasing = ClientPrefs.globalAntialiasing;
-			sprDifficultyGroup.add(sprDifficulty);
-		}
-		changeDifficulty();
-
-		difficultySelectors.add(sprDifficultyGroup);
-
-		rightArrow = new FlxSprite(leftArrow.x + 376, leftArrow.y);
-		rightArrow.frames = ui_tex;
-		rightArrow.animation.addByPrefix('idle', 'arrow right');
-		rightArrow.animation.addByPrefix('press', "arrow push right", 24, false);
-		rightArrow.animation.play('idle');
-		rightArrow.antialiasing = ClientPrefs.globalAntialiasing;
-		difficultySelectors.add(rightArrow);
-
 		//30 75
 	
 		if (displayList[0]) {
@@ -341,10 +307,6 @@ class MainMenuState extends MusicBeatState
 				PlayState.storyPlaylist = ["missingno"];
 				PlayState.isStoryMode = true;
 
-				var diffic = CoolUtil.difficultyStuff[2][1];
-				if (diffic == null) 
-					diffic = '';
-
 				PlayState.storyDifficulty = 2;
 
 				PlayState.SONG = Song.loadFromJson(PlayState.storyPlaylist[0].toLowerCase() + diffic, PlayState.storyPlaylist[0].toLowerCase());
@@ -368,26 +330,6 @@ class MainMenuState extends MusicBeatState
 	var sprDifficultyGroup:FlxTypedGroup<FlxSprite>;
 	var leftArrow:FlxSprite;
 	var rightArrow:FlxSprite;
-
-	function changeDifficulty(change:Int = 0):Void
-		{
-			curDifficulty += change;
-	
-			if (curDifficulty < 0)
-				curDifficulty = CoolUtil.difficultyStuff.length-1;
-			if (curDifficulty >= CoolUtil.difficultyStuff.length)
-				curDifficulty = 0;
-	
-			sprDifficultyGroup.forEach(function(spr:FlxSprite) {
-				spr.visible = false;
-				if(curDifficulty == spr.ID) {
-					spr.visible = true;
-					spr.alpha = 0;
-					spr.y = leftArrow.y - 15;
-					FlxTween.tween(spr, {y: leftArrow.y + 15, alpha: 1}, 0.07);
-				}
-			});
-		}
 
 	private function updateSelection()
 	{
