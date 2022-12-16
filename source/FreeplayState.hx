@@ -101,10 +101,21 @@ class FreeplayState extends MusicBeatState
 			}
 		}*/
 
-		bg = new FlxSprite().loadGraphic(Paths.image('menuDesat'));
+		bg = new FlxSprite().loadGraphic(Paths.image('blackMenu'));
 		bg.antialiasing = ClientPrefs.globalAntialiasing;
 		add(bg);
 		bg.screenCenter();
+
+		// LOAD CHARACTERS
+
+		var menuGF:FlxSprite = new FlxSprite();
+		menuGF.frames = Paths.getSparrowAtlas('FreeplayGF');
+		menuGF.animation.addByPrefix('bop', 'MenuGF', 24, true);
+		menuGF.animation.play('bop');
+		menuGF.setGraphicSize(Std.int(menuGF.width * 5/6));
+		menuGF.updateHitbox();
+		menuGF.setPosition(FlxG.width - menuGF.width + 100, FlxG.height - menuGF.height + 100);
+		add(menuGF);
 
 		grpSongs = new FlxTypedGroup<Alphabet>();
 		add(grpSongs);
